@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{views/restaurant/fragments/master_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .side-crop {
+        max-height: 500px;
+        max-width: 1000px;
+        overflow: hidden;
+    }
+    .side-crop img {
+        max-width: initial;
+    }
+</style>
+<body>
+<div layout:fragment="userFullname" class="info"><a href="#" th:text="${userFullName}" class="d-block"></a></div>
+<div class="div-content" layout:fragment="content">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Restaurant Dashboard</h1>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <section class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="container-fluid side-crop" style="max-height: 500px; overflow: hidden;">
+                                <img class="container-fluid" style="max-height: initial; object-fit: cover;" th:src="${obj.getImages()}">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3 th:text="${obj.numberOfSeat}"></h3>
+                            <p>Số lượng ghế</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion "></i>
+                        </div>
+                        <a href="#" class="small-box-footer">Chi tiết<i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3 th:text="${seatNeedProcess}"></h3>
+                            <p>Số lượng lịch đặt cần xử lý</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion "></i>
+                        </div>
+                        <a href="#" class="small-box-footer">Chi tiết<i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3 th:text="${seatNeed}"></h3>
+                            <p>Số lượng ghế cần giữ</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-chair"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">Chi tiết<i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

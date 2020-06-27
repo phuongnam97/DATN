@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{views/restaurant/fragments/master_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="userFullname" class="info"><a href="#" th:text="${userFullname}" class="d-block"></a></div>
+<div class="div-content" layout:fragment="content">
+    <script>
+        $(document).ready(function () {
+            $(".delete-button").click(function (e) {
+                // console.log(e.currentTarget.previousSibling.previousSibling.previousSibling.innerHTML)
+                console.log(e)
+            });
+        });
+
+        function checkDelete(id) {
+            console.log($('#row-' + id))
+            var code = $('#code-' + id).text();
+            var urlRedirect = 'http://localhost:8080/restaurant/table/delete?id=' + id;
+            $('#button-redirect').attr('href', urlRedirect);
+            $(".modal-body").text("Bạn muốn xóa bàn " + code + " ?")
+        }
+
+        $(function () {
+            $("#table-management").addClass("menu-open");
+            $("#table-management").children('a').addClass("active");
+            $("#list-table").addClass("active");
+        })
+    </script>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Danh sách bàn</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                        <li class="breadcrumb-item active">Danh sách bàn</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card container-fluid">
+
+                        <div th:if="${listObj.size() == 0}" class="card-body">
+                            Không có bàn, Bấm vào <a th:href="@{/restaurant/table/create}">ĐÂY</a> để tạo
+                            bàn cho nhà hàng
+                        </div>
+                        <div th:if="${listObj.size() > 0}" class="card-body">
+                            <table id="example2" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Mã bàn</th>
+                                    <th>Số ghế</th>
+                                    <th>Mô tả</th>
+                                    <!--<th>Mã khách hàng</th>-->
+                                    <!--<th>Trạng thái</th>-->
+                                    <th>Hành động</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <th:block th:each="table:${listObj}">
+                                    <tr>
+                                        <td th:id="${'code-'+table.id}" th:text="${table.code}"></td>
+                                        <td th:id="${'quantity-'+table.id}" th:text="${table.quantity}"></td>
+                                        <td th:id="${'description-'+table.id}" th:text="${table.description}"></td>
+                                        <!-- trạng thái bàn hiện tại -->
+                                        <!--<td th:text=""></td>-->
+                                        <td>
+                                            <a href="#" class="delete-button delete-a-hover" th:id="${table.id}"
+                                               onclick="checkDelete(this.id)" style="color: red;" data-toggle="modal"
+                                               data-target="#modal-default">
+                                                <i class="fas fa-trash-alt">Xóa</i>
+                                            </a>
+
+                                            <a href="#" class="delete-button delete-a-hover" th:id="${table.id}"
+                                               onclick="checkDelete(this.id)" style="color: red;">
+                                                <i class="fas fa-trash-alt">Đặt bàn</i>
+                                            </a>
+                                        </td>
+
+                                    </tr>
+                                </th:block>
+                                <div class="modal fade" id="modal-default" style="display: none;" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Cảnh báo</h4>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Bạn có chắc muốn xóa bàn ?</p>
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                    Không
+                                                </button>
+                                                <a id="button-redirect">
+                                                    <button type="button" class="btn btn-primary">
+                                                        Đồng ý
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

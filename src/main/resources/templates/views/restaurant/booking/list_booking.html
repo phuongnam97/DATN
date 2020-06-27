@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{views/restaurant/fragments/master_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="userFullname" class="info"><a href="#" th:text="${userFullname}" class="d-block"></a></div>
+<div class="div-content" layout:fragment="content">
+    <script>
+        function checkDelete(id) {
+            if (confirm('Are you sure to delete this booking ?') == true) {
+                if (confirm('If you delete this Booking, it will disappear for ever. Do you still want to delete it ?')) {
+                    window.location.href = "http://localhost:8080/restaurant/booking/delete?id=" + id;
+                }
+            }
+        }
+
+        $(function () {
+            $("#booking-management").addClass("menu-open");
+            $("#booking-management").children('a').addClass("active");
+            $("#list-booking").addClass("active");
+        })
+    </script>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Danh sách đặt bàn</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                        <li class="breadcrumb-item active">Danh sách đặt bàn</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card container-fluid">
+
+                        <div th:if="${isEmpty == true}" class="card-body">
+                            Không có yêu cầu đặt bàn, Bấm vào <a th:href="@{/restaurant/booking/create}">ĐÂY</a> để tạo
+                            yêu cầu đặt bàn
+                        </div>
+                        <div th:if="${isEmpty == false}" class="card-body">
+                            <table id="example2" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Tên khách hàng</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Số lượng</th>
+                                    <th>Mã bàn đặt</th>
+                                    <th>Yêu cầu chi tiết</th>
+                                    <th>Giờ</th>
+                                    <th>Ngày</th>
+                                    <th>Trạng thái</th>
+                                    <th>Xác nhận</th>
+                                    <th>Hành động</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <th:block th:each="booking:${listObj}">
+                                    <tr>
+                                        <td th:text="${booking.guestName}"></td>
+                                        <td th:text="${booking.guestTelephone}"></td>
+                                        <td th:text="${booking.quantity}"></td>
+                                        <td th:text="${booking.table.code}"></td>
+                                        <td th:text="${booking.bookingDetail}"></td>
+                                        <td th:with="date = ${booking.bookingDatetime.split(' ')}"
+                                            th:text="${date[1]}"></td>
+                                        <td th:with="date = ${booking.bookingDatetime.split(' ')[0].split('-')}"
+                                            th:text="${date[2]+'-'+date[1]+'-'+date[0]}"></td>
+                                        <td th:if="${booking.verifyStatus == 0}">Chưa xử lý</td>
+                                        <td th:if="${booking.verifyStatus == 1}">Đã xác nhận</td>
+                                        <td th:if="${booking.verifyStatus == 2}">Đã đến</td>
+                                        <td th:if="${booking.verifyStatus == 3}">Đã hủy</td>
+                                        <td th:if="${booking.verifyStatus == 4}">Đang ăn</td>
+                                        <td th:if="${booking.verifyStatus == 5}">Đã thanh toán</td>
+                                        <td>
+                                            <a th:if="${booking.verifyStatus == 0}" th:href="@{/restaurant/booking/confirm-booking(bookingId=${booking.id})}" style="color: forestgreen"><i class="far fa-check-circle"> Xác nhận bàn</i></a>
+                                            <a th:if="${booking.verifyStatus == 1}" th:href="@{/restaurant/booking/confirm-arrived(bookingId=${booking.id})}" style="color: forestgreen"><i class="far fa-check-circle"> Xác nhận đến</i></a>
+                                        </td>
+                                        <td>
+
+                                            <a th:href="@{/restaurant/booking/edit(id=${booking.id})}">
+                                                <i class="fas fa-edit">Chi tiết</i>
+                                            </a>
+                                            |
+                                            <a href="#" class="delete-button delete-a-hover" th:id="${booking.id}"
+                                               onclick="checkDelete(this.id)" style="color: red;">
+                                                <i class="fas fa-trash-alt">Xóa</i>
+                                            </a>
+                                            |
+                                            <a th:if="${booking.verifyStatus == 2}" th:href="@{/restaurant/payment(bookingId=${booking.id})}">
+                                                <i class="fas fa-edit">Thanh toán</i>
+                                            </a>
+                                        </td>
+
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                                <div class="modal fade" id="modal-default" style="display: none;" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Cảnh báo</h4>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Bạn có chắc muốn xóa bàn ?</p>
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                    Không
+                                                </button>
+                                                <a id="button-redirect">
+                                                    <button type="button" class="btn btn-primary">
+                                                        Đồng ý
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

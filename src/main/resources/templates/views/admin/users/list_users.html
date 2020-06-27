@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{views/admin/fragments/master_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="div-content" layout:fragment="content">
+    <script>
+        function checkBlock(id) {
+            if (confirm('Are you sure to block this user ?') == true) {
+                if (confirm('If you block this user, it cannot login to the web')) {
+                    window.location.href = "http://localhost:8080/admin/users/block?id=" + id;
+                }
+            }
+        }
+
+        function checkUnblock(id) {
+            if (confirm('Are you sure to unblock this user ?') == true) {
+                window.location.href = "http://localhost:8080/admin/users/unblock?id=" + id;
+            }
+        }
+
+        $(function () {
+            console.log("add class")
+            $("#user-management").addClass("menu-open");
+        })
+    </script>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>List Restaurant Type</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">List Restaurant Type</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <section class="content">
+        <div class="row container-fluid">
+            <div class="col-12">
+                <div class="card">
+                    <div th:if="${isEmpty == true}" class="card-body">
+                        There's no Users created
+                    </div>
+                    <div th:if="${isEmpty == false}" class="card-body">
+                        <table id="example2" class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Full Name</th>
+                                <th>Gender</th>
+                                <th>Address</th>
+                                <th>Email</th>
+                                <th>Telephone</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <th:block th:each="user:${listObj}">
+                                <tr>
+                                    <td th:text="${user.id}"></td>
+                                    <td th:text="${user.username}"></td>
+                                    <td th:text="${user.fullname}"></td>
+                                    <td th:if="${user.gender == 1}"><i class="fas fa-mars"></i></td>
+                                    <td th:if="${user.gender == 2}"><i class="fas fa-venus"></i></td>
+                                    <td th:text="${user.address}"></td>
+                                    <td th:text="${user.email}"></td>
+                                    <td th:text="${user.telephone}"></td>
+                                    <td th:if="${user.role.id == 1}"><i class="fas fa-user"></i></td>
+                                    <td th:if="${user.role.id == 2}"><i class="fas fa-store"></i></td>
+                                    <td th:if="${user.role.id == 3}"><i class="fas fa-user-cog"></i></td>
+                                    <td th:if="${user.status == 0}">Inactive</td>
+                                    <td th:if="${user.status == 1}">Active</td>
+                                    <td th:if="${user.status == 2}">Blocked</td>
+                                    <td>
+                                        <a th:if="${user.status == 1}" th:href="@{/admin/users/block(id=${user.id})}"
+                                           th:id="${user.id}" onclick="checkBlock(this.id)"
+                                           style="color: red">
+                                            <i class="fas fa-lock"> Khóa</i>
+                                        </a>
+                                        <a th:if="${user.status == 0 or user.status == 2}"
+                                           th:href="@{/admin/users/unblock(id=${user.id})}" th:id="${user.id}"
+                                           onclick="checkUnblock(this.id)">
+                                            <i class="fas fa-unlock"> Mở khóa</i>
+                                        </a>
+                                    </td>
+
+                                </tr>
+                            </th:block>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer clearfix">
+                        <ul class="pagination pagination-sm m-0 float-right">
+                            <li th:if="${listObj.hasPrevious()}" class="page-item"><a class="page-link" th:href="@{/admin/users(page=${listObj.number - 1})}">«</a></li>
+                            <th:block th:each="i : ${#numbers.sequence(0, listObj.totalPages - 1)}">
+                                <li th:if="${listObj.number == i}" class="page-item"><a class="page-link" th:href="@{/admin/users(page=${i})}">[[${i}+1]]</a></li>
+                                <li th:unless="${listObj.number == i}" class="page-item"><a class="page-link" th:href="@{/admin/users(page=${i})}">[[${i}+1]]</a></li>
+                            </th:block>
+                            <li th:if="${listObj.hasNext()}" class="page-item"><a class="page-link" th:href="@{/admin/users(page=${listObj.number + 1})}">»</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

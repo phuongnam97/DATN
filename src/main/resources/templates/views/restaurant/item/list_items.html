@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{views/restaurant/fragments/master_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="userFullname" class="info"><a href="#" th:text="${userFullName}" class="d-block"></a></div>
+<div class="div-content" layout:fragment="content">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Thông tin món ăn cần chế biến</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                        <li class="breadcrumb-item active">Trang danh sách suất ăn</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-header p-2">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item"><a id="waiting-item" class="nav-link active"
+                                                    href="#waiting-item-tab" data-toggle="tab">Món đang chờ</a></li>
+                            <li class="nav-item"><a id="cooking-item" class="nav-link" href="#cooking-item-tab"
+                                                    data-toggle="tab">Món đang chế biến</a>
+                            <li class="nav-item"><a id="finish-item" class="nav-link" href="#finish-item-tab"
+                                                    data-toggle="tab">Món đã hoàn thành</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="waiting-item-tab">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card-body">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Tên món</th>
+                                                <th>Số lượng</th>
+                                                <th>Số lượng xử lý</th>
+                                                <th>Hành động</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="tbody-0">
+                                            <th:block th:if="${listItemPending.size() != 0}"
+                                                      th:each="item:${listItemPending}">
+                                                <tr>
+                                                    <td th:text="${item.dish.id}"></td>
+                                                    <td th:text="${item.dish.name}"></td>
+                                                    <td th:text="${item.quantity}"></td>
+                                                    <td><input type="number" min="1"
+                                                               th:id="${'process-pending-value-' + item.dish.id}"></td>
+                                                    <td><a href="#" th:id="${'process-pending-'+item.dish.id}"
+                                                           class="process-btn process-pending"><i
+                                                            class="fas fa-hourglass-half"> Xử lý</i></a></td>
+                                                </tr>
+                                            </th:block>
+                                            <th:block th:if="${listItemPending.size() == 0}">
+                                                <tr>
+                                                    <td></td>
+                                                    <td>Không tồn tại món ăn nào trong hàng chờ</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            </th:block>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- /.tab-pane -->
+                        <div class="tab-pane" id="cooking-item-tab">
+                            <!-- The timeline -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card-body">
+
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Tên món</th>
+                                                <th>Số lượng</th>
+                                                <th>Số lượng xử lý</th>
+                                                <th>Hành động</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="tbody-1">
+                                            <th:block th:if="${listItemCooking.size() != 0}"
+                                                      th:each="item:${listItemCooking}">
+                                                <tr>
+                                                    <td th:text="${item.dish.id}"></td>
+                                                    <td th:text="${item.dish.name}"></td>
+                                                    <td th:text="${item.quantity}"></td>
+                                                    <td><input type="number" min="1"
+                                                               th:id="${'process-cooking-value-' + item.dish.id}"></td>
+                                                    <td><a href="#" th:id="${'process-cooking-'+item.dish.id}"
+                                                           class="process-btn process-cooking"><i
+                                                            class="fas fa-hourglass-half"> Xử lý</i></a></td>
+                                                </tr>
+                                            </th:block>
+                                            <th:block th:if="${listItemCooking.size() == 0}">
+                                                <tr>
+                                                    <td></td>
+                                                    <td>Không tồn tại món ăn nào đang được chế biến</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            </th:block>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.tab-pane -->
+
+                        <!-- /.tab-pane -->
+                        <div class="tab-pane" id="finish-item-tab">
+                            <!-- The timeline -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card-body">
+                                        <button type="button" class="btn-add-ticket"> Nhận món</button>
+
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Tên món</th>
+                                                <th>Số lượng</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="tbody-2">
+                                            <th:block th:if="${listItemFinish.size() != 0}"
+                                                      th:each="item:${listItemFinish}">
+                                                <tr>
+                                                    <td th:text="${item.dish.id}"></td>
+                                                    <td th:text="${item.dish.name}"></td>
+                                                    <td th:text="${item.quantity}"></td>
+                                                </tr>
+                                            </th:block>
+                                            <th:block th:if="${listItemFinish.size() == 0}">
+                                                <tr>
+                                                    <td></td>
+                                                    <td>Không tồn tại món ăn nào đã hoàn thành</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            </th:block>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.tab-pane -->
+
+                    </div>
+                    <!-- /.tab-content -->
+                </div>
+            </div>
+            <script>
+                $(".process-btn").live('click',function () {
+                    var url = window.location.origin + "/restaurant/kitchen/process-item"
+                    var method
+                    var id
+                    var quantity
+                    if ($(this).hasClass("process-pending")) {
+                        id = this.id.replace("process-pending-", "")
+                        method = "pending"
+                        quantity = $("#process-pending-value-" + id).val()
+                    }
+                    if ($(this).hasClass("process-cooking")) {
+                        id = this.id.replace("process-cooking-", "")
+                        method = "cooking"
+                        quantity = $("#process-cooking-value-" + id).val()
+                    }
+                    var request = {dishId: parseInt(id), quantity: parseInt(quantity), type: method}
+                    console.log(request)
+
+                    $.ajax({
+                        url: url,
+                        method: "POST",
+                        data: JSON.stringify(request),
+                        dataType: "json",
+                        contentType: "application/json",
+                        success: function (data) {
+                            console.log(data)
+                            for (i in data) {
+                                var htmlContent = ""
+                                var method
+                                if (data[i].length > 0){
+                                    for (j in data[i]) {
+                                        htmlContent += "<tr>"
+                                        htmlContent += " <td>"+ data[i][j].dish.id +"</td>"
+                                        htmlContent += "<td>"+ data[i][j].dish.name +"</td>"
+                                        htmlContent += "<td>"+ data[i][j].quantity +"</td>"
+
+                                        if ( i < 2){
+                                            if (i == 1){
+                                                method = 'cooking'
+                                            } else method = 'pending'
+                                            htmlContent += "<td><input type='number' min='1' id='process-"+method+"-value-" + data[i][j].dish.id + "'></td>"
+                                            htmlContent += "<td><a href='#' id='process-"+method+"-" + data[i][j].dish.id + "' class='process-btn process-"+method+"'>"
+                                            htmlContent += "<i class='fas fa-hourglass-half'> Xử lý</i></a></td>"
+                                        }
+
+                                        htmlContent += "</tr>"
+                                    }
+                                }
+                                if (data[i].length == 0){
+                                    htmlContent += "<tr>"
+                                    htmlContent += "<td></td>"
+                                    htmlContent += "<td>Không tồn tại món ăn nào "+ ((i == 0)? "trong hàng chờ" : ((i==1) ? "đang được chế biến" : "đã hoàn thành")) +"</td>"
+                                    htmlContent += "<td></td>"
+                                    htmlContent += "<td></td>"
+                                    htmlContent += "<td></td>"
+                                    htmlContent += "</tr>"
+                                }
+                                $(".tbody-" + i).html(htmlContent)
+                            }
+
+                            var successMessage = "<div class='toast bg-success fade show' role='alert' aria-live='assertive' aria-atomic='true'>"
+                                +"<div class='toast-header'>" +
+                                "<strong class='mr-auto'>Thông báo</strong>" +
+                                "<small></small>"
+                                +"<button data-dismiss='toast' type='button' class='ml-2 mb-1 close' aria-label='Close'>" +
+                                "<span aria-hidden='true' class='close-message' onclick='closeMessage(this)'>×</span>" +
+                                "</button>" +
+                                "</div><div class='toast-body'>" +
+                                "Xử lý thành công" +
+                                "</div>" +
+                                "</div>"
+                            var currentHTML = $('#toastsContainerTopRight').html()
+                            $('#toastsContainerTopRight').html( successMessage + currentHTML)
+
+                        },
+                        failed: function () {
+                            var failedMessage = "<div class='toast bg-danger fade show' role='alert' aria-live='assertive' aria-atomic='true'>"
+                                +"<div class='toast-header'>" +
+                                "<strong class='mr-auto'>Thông báo</strong>" +
+                                "<small></small>"
+                                +"<button data-dismiss='toast' type='button' class='ml-2 mb-1 close' aria-label='Close'>" +
+                                "<span aria-hidden='true' class='close-message' onclick='closeMessage(this)'>×</span>" +
+                                "</button>" +
+                                "</div>" +
+                                "<div class='toast-body'>Xử lý không thành công</div>" +
+                                "</div>"
+
+                            var currentHTML = $('#toastsContainerTopRight').html()
+                            $('#toastsContainerTopRight').html(currentHTML + successMessage)
+                        }
+                    })
+                })
+                
+                function closeMessage(e){
+                    console.log($(e)[0].offsetParent.remove())
+                }
+
+                $(".btn-add-ticket").click(function () {
+                    var url = window.location.origin + "/restaurant/kitchen/create-ticket"
+                    $.ajax({
+                        url: url,
+                        method: "POST",
+                        dataType: "json",
+                        success: function (data) {
+                            console.log(data)
+                            update(data[1])
+                            var ticket = "<div class='toast bg-warning fade show' role='alert' aria-live='assertive' aria-atomic='true'>"
+                                +"<div class='toast-header'>" +
+                                "<strong class='mr-auto'>Thông báo</strong>" +
+                                "<small></small>"
+                                +"<button data-dismiss='toast' type='button' class='ml-2 mb-1 close' aria-label='Close'>" +
+                                "<span aria-hidden='true' class='close-message' onclick='closeMessage(this)'>×</span>" +
+                                "</button>" +
+                                "</div>" +
+                                "<div class='toast-body'>"
+
+                            for (i in data[0]){
+                                ticket += "Bàn: <br>" + data[0][i].booking.table.code + "<br>"
+                                for (j in data[0][i].listDishOrderServed){
+                                    ticket +=  data[0][i].listDishOrderServed[j].dish.name + " : " + data[0][i].listDishOrderServed[j].quantity + " suất <br>"
+                                }
+
+                            }
+
+                            ticket += "</div>" + "</div>"
+
+                            var currentHTML = $('#toastsContainerTopRight').html()
+                            $('#toastsContainerTopRight').html(ticket + currentHTML)
+
+                        }
+                    })
+                })
+
+                function update(data) {
+                    for (i in data) {
+                        var htmlContent = ""
+                        var method
+                        if (data[i].length > 0){
+                            for (j in data[i]) {
+                                htmlContent += "<tr>"
+                                htmlContent += " <td>"+ data[i][j].dish.id +"</td>"
+                                htmlContent += "<td>"+ data[i][j].dish.name +"</td>"
+                                htmlContent += "<td>"+ data[i][j].quantity +"</td>"
+
+                                if ( i < 2){
+                                    if (i == 1){
+                                        method = 'cooking'
+                                    } else method = 'pending'
+                                    htmlContent += "<td><input type='number' min='1' id='process-"+method+"-value-" + data[i][j].dish.id + "'></td>"
+                                    htmlContent += "<td><a href='#' id='process-"+method+"-" + data[i][j].dish.id + "' class='process-btn process-"+method+"'>"
+                                    htmlContent += "<i class='fas fa-hourglass-half'> Xử lý</i></a></td>"
+                                }
+
+                                htmlContent += "</tr>"
+                            }
+                        }
+                        if (data[i].length == 0){
+                            if ( i < 2) {
+                                htmlContent += "<tr>"
+                                htmlContent += "<td></td>"
+                                htmlContent += "<td>Không tồn tại món ăn nào " + ((i == 0) ? "trong hàng chờ" :  "đang được chế biến" ) + "</td>"
+                                htmlContent += "<td></td>"
+                                htmlContent += "<td></td>"
+                                htmlContent += "<td></td>"
+                                htmlContent += "</tr>"
+                            }
+                            if (i==2){
+                                htmlContent += "<tr>"
+                                htmlContent += "<td></td>"
+                                htmlContent += "<td>Không tồn tại món ăn nào đã hoàn thành</td>"
+                                htmlContent += "<td></td>"
+                                htmlContent += "</tr>"
+                            }
+                        }
+                        $(".tbody-" + i).html(htmlContent)
+                    }
+                }
+            </script>
+        </div>
+    </section>
+</div>
+</body>
+</html>

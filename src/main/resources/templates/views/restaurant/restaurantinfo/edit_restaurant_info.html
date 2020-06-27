@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{views/restaurant/fragments/master_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="userFullname" class="info"><a href="/restaurant/" th:text="${userFullName}" class="d-block"></a></div>
+<div class="div-content" layout:fragment="content">
+    <script>
+        $(function () {
+            $("#restaurant-info").addClass("menu-open");
+            $("#restaurant-info").children("a").addClass("active");
+            $("#edit-info").addClass("active")
+        })
+    </script>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Sửa thông tin nhà hàng</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                        <li class="breadcrumb-item active">Sửa thông tin nhà hàng</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form role="form" action="#" th:action="@{/restaurant/info/edit}" method="post" th:object="${obj}">
+                                <div class="form-group">
+                                    <label for="restaurant_name">Tên nhà hàng</label>
+                                    <input type="text" class="form-control" id="restaurant_name" placeholder="Nhập tên nhà hàng" th:value="${obj.name}" th:field="*{name}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="restaurant_desc">Mô tả</label>
+                                    <textarea class="form-control" id="restaurant_desc" rows="3" placeholder="Nhập ..." th:value="${obj.description}" th:field="*{description}"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="restaurant_min_price">Giá tiền tối thiểu</label>
+                                    <input class="form-control" type="number" id="restaurant_min_price" placeholder="Enter Min Price" th:value="${obj.averagePriceMin}" th:field="*{averagePriceMin}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="restaurant_max_price">Giá tiền tối đa</label>
+                                    <input class="form-control" id="restaurant_max_price" type="number" placeholder="Enter Max Price" th:value="${obj.averagePriceMax}" th:field="*{averagePriceMax}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="restaurant_image">Hình ảnh</label>
+                                    <input class="form-control" id="restaurant_image" type="text" placeholder="Enter Image Url" th:value="${obj.images}" th:field="*{images}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="seat_left">Số lượng ghế còn lại</label>
+                                    <input class="form-control" id="seat_left" type="number" placeholder="Enter Number of seat Left" th:value="${obj.numberOfSeatLeft}" th:field="*{numberOfSeatLeft}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="seatNo">Số lượng ghế</label>
+                                    <input class="form-control" id="seatNo" type="number" placeholder="Enter Number of seat" th:value="${obj.numberOfSeat}" th:field="*{numberOfSeat}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="restaurant_telephone">Số điện thoại liên hệ</label>
+                                    <input class="form-control" id="restaurant_telephone" type="text" placeholder="Enter Phone Number" th:value="${obj.telephone}" th:field="*{telephone}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="restaurant_address">Địa chỉ</label>
+                                    <input class="form-control" id="restaurant_address" type="text" placeholder="Enter Address" th:value="${obj.address}" th:field="*{address}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Thể loại nhà hàng</label>
+                                    <select class="form-control" th:field="*{restaurantType}">
+                                        <th:block th:each="restaurant_type:${restaurantTypes}">
+                                            <option th:value="${restaurant_type.id}" th:text="${restaurant_type.name}"></option>
+                                        </th:block>
+                                    </select>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Sửa</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

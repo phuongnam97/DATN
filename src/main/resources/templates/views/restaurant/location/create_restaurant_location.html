@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{views/admin/fragments/master_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="div-content" layout:fragment="content">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Create New Restaurant Type</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Create Form Restaurant Location</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <section class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form role="form" action="#" th:action="@{/admin/restaurant_type/create}" method="post" th:object="${obj}">
+                                <div class="form-group">
+                                    <label for="restaurent_type_name">Restaurant Type Name</label>
+                                    <input type="text" class="form-control" id="restaurent_type_name" placeholder="Enter restaurant type name" th:field="*{name}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <textarea class="form-control" rows="3" placeholder="Enter ..." th:field="*{description}"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <div class="form-group">
+                                    <label>Image</label>
+                                    <input type="text" class="form-control" rows="3" placeholder="Enter ..." th:field="*{image}">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

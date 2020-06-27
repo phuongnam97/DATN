@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{views/restaurant/fragments/master_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="userFullname" class="info"><a href="#" th:text="${userFullName}" class="d-block"></a></div>
+<div class="div-content" layout:fragment="content">
+    <script>
+        $(document).ready(function () {
+            $("#input_image").change(function () {
+                console.log($('#input_image').val())
+                if (this.files && this.files[0]){
+                    var file = this.files[0];
+                    var reader = new FileReader();
+                    $("#div_preview_image").removeAttr("hidden");
+                    reader.onload = function (ev) {
+                        $("#preview_image").attr('src', ev.target.result);
+                    }
+                    reader.readAsDataURL(file);
+                    $(".custom-file-label").text(file.name);
+                }
+            });
+        });
+
+        $(function () {
+            $("#dish-management").addClass("menu-open");
+        })
+    </script>
+    <style>
+        div#div_preview_image{
+            height: 100px;
+            width: 100px;
+            border: #00b44e;
+        }
+
+        img#preview_image{
+            height: 100px;
+            width: 100px;
+            border: #00b44e;
+        }
+    </style>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Tạo bàn mới</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                        <li class="breadcrumb-item active">Trang tạo bàn cho cửa hàng</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form role="form" action="#" th:action="@{/restaurant/dish/edit}" method="post" th:object="${obj}" enctype="multipart/form-data">
+                                <input type="text" th:value="${obj.id}" th:field="*{id}" hidden>
+                                <div class="form-group">
+                                    <label for="dish_name">Tên món</label>
+                                    <input type="text" class="form-control" id="dish_name" th:value="${obj.name}" th:field="*{name}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="dish_price">Giá</label>
+                                    <input type="number" class="form-control" id="dish_price" placeholder="Nhập mô tả" th:value="${obj.price}" th:field="*{price}">
+                                </div>
+                                <input type="text" th:value="${obj.image}" name="currentUrlImage" hidden>
+                                <div class="form-group">
+                                    <label for="input_image">Ảnh</label>
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="input_image" name="file" accept="image/x-png,image/gif,image/jpeg" multiple>
+                                            <label class="custom-file-label" for="input_image">Chọn ảnh</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="div_preview_image">
+                                    <img id="preview_image" th:src="${obj.image}">
+                                </div>
+                                <select class="form-control" th:field="*{dishType}">
+                                    <th:block th:each="dish_type:${listDishType}">
+                                        <option th:text="${dish_type.name}" th:value="${dish_type.id}"></option>
+                                    </th:block>
+                                </select>
+                                <div class="form-group">
+                                    <label for="dish_desc">Mô tả</label>
+                                    <input type="text" class="form-control" id="dish_desc" placeholder="Nhập mô tả" th:field="*{description}">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Sửa</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

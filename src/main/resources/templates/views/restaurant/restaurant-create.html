@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Create Restaurant</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/fontawesome-free/css/all.min.css}">
+    <!-- Ekko Lightbox -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/ekko-lightbox/ekko-lightbox.css}">
+    <!-- DataTable -->
+    <link rel="stylesheet" th:href="@{/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.css}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" th:href="@{/admin/dist/css/adminlte.min.css}">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body>
+<section class="content">
+    <div class="container-fluid">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Create Restaurant</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form role="form" th:object="${obj}" th:action="@{/users/create-restaurant}" method="post">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="restaurantName">Restaurant Name</label>
+                        <input type="text" class="form-control" id="restaurantName" placeholder="Enter The Restaurant Name" th:field="*{name}">
+                    </div>
+                    <div class="form-group">
+                        <label for="restaurantAddress">Restaurant Address</label>
+                        <input type="text" class="form-control" id="restaurantAddress" placeholder="Enter The Restaurant Address" th:field="*{address}">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Restaurant Telephone</label>
+                        <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Telephone" th:field="*{telephone}">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control" rows="3" placeholder="Enter Description" th:field="*{description}"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="minPrice">Min Price</label>
+                        <input type="number" class="form-control" id="minPrice" placeholder="Min Price" th:field="*{averagePriceMin}">
+                    </div>
+                    <div class="form-group">
+                        <label for="maxPrice">Max Price</label>
+                        <input type="number" class="form-control" id="maxPrice" placeholder="Max Price" th:field="*{averagePriceMax}">
+                    </div>
+                    <!-- Upload file ảnh -->
+                    <div class="form-group">
+                        <label for="input_image">Images</label>
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="input_image" name="file"
+                                       accept="image/x-png,image/gif,image/jpeg" multiple>
+                                <label class="custom-file-label" for="input_image">Choose file</label>
+                            </div>
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="">Upload</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="noOfSeat">Number of seat</label>
+                        <input type="number" class="form-control" id="noOfSeat" placeholder="Password" th:field="*{numberOfSeat}">
+                    </div>
+                    <div class="form-group">
+                        <label for="noOfSeatLeft">Number of seat left</label>
+                        <input type="number" class="form-control" id="noOfSeatLeft" placeholder="Password" th:field="*{numberOfSeatLeft}">
+                    </div>
+                    <div class="form-group">
+                        <label>Restaurant Type</label>
+                        <select class="form-control" th:field="*{restaurantType}">
+                            <th:block th:each="restaurant_type:${restaurantTypes}">
+                                <option th:value="${restaurant_type.id}" th:text="${restaurant_type.name}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- jQuery -->
+<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
+<!-- Bootstrap -->
+<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- jQuery UI -->
+<script th:src="@{/admin/plugins/jquery-ui/jquery-ui.min.js}"></script>
+<!-- Ekko Lightbox -->
+<script th:src="@{/admin/plugins/ekko-lightbox/ekko-lightbox.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/admin/dist/js/adminlte.min.js}"></script>
+<!-- AdminLTE for demo purposes -->
+<script th:src="@{/admin/dist/js/demo.js}"></script>
+<!-- Filterizr-->
+<script th:src="@{/admin/plugins/filterizr/jquery.filterizr.min.js}"></script>
+<!-- Page specific script -->
+<script>
+    $(function () {
+        $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+            event.preventDefault();
+            $(this).ekkoLightbox({
+                alwaysShowClose: true
+            });
+        });
+
+        $('.filter-container').filterizr({gutterPixels: 3});
+        $('.btn[data-filter]').on('click', function() {
+            $('.btn[data-filter]').removeClass('active');
+            $(this).addClass('active');
+        });
+    })
+</script>
+</body>
+</html>

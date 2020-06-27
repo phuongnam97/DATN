@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{views/user/fragments/master_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking history</title>
+</head>
+<style>
+    th {
+        text-align: center;
+    }
+</style>
+<body>
+<section layout:fragment="content" class="bgwhite p-t-55 p-b-65 slide1">
+    <div class="container">
+        <h2 class="p-b-11 text-center">
+            Lịch sử đặt bàn
+        </h2><br>
+        <div class="container wrap-table-shopping-cart">
+            <table class="table-bordered text-center table">
+                <thead>
+                <tr>
+                    <th class="column-1 text-center">#</th>
+                    <th class="column-2 text-center">Ngày</th>
+                    <th class="column-3 text-center">Giờ</th>
+                    <th class="column-4 text-center">Yêu cầu chi tiết</th>
+                    <th class="column-5 text-center">Trạng thái</th>
+                    <th class="column-5 text-center">Hoạt động</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <th:block th:each="obj : ${listObj}">
+                        <tr>
+                        <td th:text="${obj.id}"></td>
+                        <td th:text="${obj.getBookingDate()}"></td>
+                        <td th:text="${obj.getBookingTime()}"></td>
+                        <td th:text="${obj.getBookingDetail()}"></td>
+
+                        <td th:if="${obj.verifyStatus == 0}">Chưa xác nhận</td>
+                        <td th:if="${obj.verifyStatus == 1}">Đã xác nhận</td>
+                        <td th:if="${obj.verifyStatus == 2}">Đã đến</td>
+                        <td th:if="${obj.verifyStatus == 3}">Đã hủy</td>
+
+                        <td th:if="${(obj.verifyStatus == 0 || obj.verifyStatus == 1) && obj.isOutOfDate()}">Quá hạn</td>
+                        <td th:if="${(obj.verifyStatus == 0 || obj.verifyStatus == 1) && !obj.isOutOfDate()}"><a th:href="@{/cancel-booking(bookingId=${obj.id})}">Hủy</a></td>
+                        <td th:if="${obj.verifyStatus == 2}"><i class="far fa-check-circle-o" style="color: #00b44e"></i></td>
+                        <td th:if="${obj.verifyStatus == 3}">-</td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+        <!-- Pagination -->
+        <div class="pagination flex-m flex-w p-t-26">
+            <a th:if="${listObj.hasPrevious()}" th:href="@{/booking-history(page=${listObj.number - 1})}" class="item-pagination flex-c-m trans-0-4 active-pagination">«</a>
+            <th:block th:each="i : ${#numbers.sequence(0, listObj.totalPages - 1)}">
+                <a th:if="${listObj.number == i}" th:href="@{/booking-history(page=${i})}" class="item-pagination flex-c-m trans-0-4 active-pagination">[[${i}+1]]</a>
+                <a th:unless="${listObj.number == i}" th:href="@{/booking-history(page=${i})}" class="item-pagination flex-c-m trans-0-4 active-pagination">[[${i}+1]]</a>
+            </th:block>
+            <a th:if="${listObj.hasPrevious()}" th:href="@{/booking-history(page=${listObj.number - 1})}" class="item-pagination flex-c-m trans-0-4 active-pagination">»</a>
+        </div>
+    </div>
+</section>
+</body>
+</html>

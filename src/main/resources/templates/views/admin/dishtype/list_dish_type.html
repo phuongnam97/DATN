@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{views/admin/fragments/master_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="div-content" layout:fragment="content">
+    <script>
+        function checkDelete(id) {
+            if (confirm('Are you sure to delete this movie ?') == true) {
+                if (confirm('If you delete this Restaurant Type, all Restaurant of this type will be deleted. Do you still want to delete it ?')) {
+                    window.location.href = "http://localhost:8080/admin/restaurant_type/delete?id=" + id;
+                }
+            }
+        }
+
+        $(function () {
+            console.log("add class")
+            $("#dish-type").addClass("menu-open");
+        })
+
+    </script>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Danh sách loại nhà hàng</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                        <li class="breadcrumb-item active">Danh sách loại nhà hàng</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+
+                        <div th:if="${listObj.isEmpty() == true}" class="card-body">
+                            Không tồn tại loại món ăn/ đồ uống nào, bấm vào <a
+                                th:href="@{/admin/dish_type/create}">ĐÂY</a> để tạo loại món ăn/ đồ uống mới
+                        </div>
+                        <div th:if="${listObj.isEmpty() == false}" class="card-body">
+                            <table id="example2" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Tên</th>
+                                    <th>Mô tả</th>
+                                    <th>Hành động</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <th:block th:each="obj:${listObj}">
+                                    <tr>
+                                        <td th:text="${obj.id}"></td>
+                                        <td th:text="${obj.name}"></td>
+                                        <td th:text="${obj.description}"></td>
+                                        <td>
+                                            <a th:href="@{/admin/dish_type/edit(id=${obj.id})}">
+                                                <i class="fas fa-edit">Sửa</i>
+                                            </a>
+                                            <a href="#" class="delete-button delete-a-hover"
+                                               th:id="${obj.id}" onclick="checkDelete(this.id)"
+                                               style="color: red;">
+                                                <i class="fas fa-trash-alt">Xóa</i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                        <div th:if="${listObj.isEmpty() == false}">
+                            <div class="card-footer clearfix">
+                                <ul class="pagination pagination-sm m-0 float-right">
+                                    <li th:if="${listObj.hasPrevious()}" class="page-item"><a class="page-link"
+                                                                                              th:href="@{/admin/users(page=${listObj.number - 1})}">«</a>
+                                    </li>
+                                    <th:block th:each="i : ${#numbers.sequence(0, listObj.totalPages - 1)}">
+                                        <li th:if="${listObj.number == i}" class="page-item"><a class="page-link"
+                                                                                                th:href="@{/admin/users(page=${i})}">[[${i}+1]]</a>
+                                        </li>
+                                        <li th:unless="${listObj.number == i}" class="page-item"><a class="page-link"
+                                                                                                    th:href="@{/admin/users(page=${i})}">[[${i}+1]]</a>
+                                        </li>
+                                    </th:block>
+                                    <li th:if="${listObj.hasNext()}" class="page-item"><a class="page-link"
+                                                                                          th:href="@{/admin/users(page=${listObj.number + 1})}">»</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

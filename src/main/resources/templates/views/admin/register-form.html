@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Register</title>
+
+    <!-- Custom Stylesheet -->
+    <link th:href="@{/admin/css/style.css}" rel="stylesheet">
+
+</head>
+<body>
+<div class="card-body">
+    <h4 class="card-title mb-4">Register Forms</h4>
+    <div class="basic-form">
+        <form action="#" th:action="@{/users/process-register}" method="post" th:object="${user}" enctype="multipart/form-data">
+            <div class="form-group">
+                <label class="text-label">Username</label>
+                <input type="text" name="username" class="form-control" placeholder="Username" required th:field="*{username}">
+            </div>
+            <div class="form-group">
+                <label class="text-label">Password*</label>
+                <input type="password" name="password" class="form-control" placeholder="Password" required th:field="*{password}">
+            </div>
+            <div class="form-group">
+                <label class="text-label">Fullname</label>
+                <input type="text" name="username" class="form-control" placeholder="Fullname" required th:field="*{fullname}">
+            </div>
+            <div class="d-flex flex-wrap">
+                <div class="form-check mb-4 flex-grow-1">
+                    <input id="gender_man" class="" checked="" name="radiobuttons" type="radio" th:field="*{gender}" value = "1">
+                    <label for="gender_man" class="">Man</label>
+                </div>
+                <div class="form-check mb-4 flex-grow-1">
+                    <input id="gender_woman" class="radio-outlined" checked="" name="radiobuttons" type="radio" th:field="*{gender}" value = "2">
+                    <label for="gender_woman" class="">Woman</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="text-label">Address*</label>
+                <input type="text" name="address" class="form-control" placeholder="Address" required th:field="*{address}">
+            </div>
+            <div class="form-group">
+                <label class="text-label">Email*</label>
+                <input type="text" name="email" class="form-control" placeholder="Email" required="@" th:field="*{email}">
+            </div>
+            <div class="form-group">
+                <label class="text-label">Date of birth</label>
+                <input type="date" name="DOB" class="form-control" placeholder="DD/MM/YYYY" th:field="*{DOB}">
+            </div>
+            <div class="form-group">
+                <label class="text-label">Telephone</label>
+                <input type="text" name="telephone" class="form-control" placeholder="Phone Number" th:field="*{telephone}">
+            </div>
+            <div class="d-flex flex-wrap">
+                <label class="text-label">Account type</label>
+                <div class="form-check mb-4 flex-grow-1">
+                    <input id="role_user" class="" checked="" name="radiobuttons" type="radio" th:field="*{role.id}" value = "1">
+                    <label for="role_user" class="">User</label>
+                </div>
+                <div class="form-check mb-4 flex-grow-1">
+                    <input id="role_restaurant" class="radio-outlined" checked="" name="radiobuttons" type="radio" th:field="*{role.id}" value = "2">
+                    <label for="role_restaurant" class="">Restaurant Manager</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-form mr-2">Register</button>
+            <button type="button" class="btn btn-primary btn-form mr-2">Reset</button>
+
+            <label>If you already have an account, click <a href="/users/login">here</a> to login</label>
+        </form>
+    </div>
+</div>
+</body>
+<script src="../../assets/plugins/common/common.min.js"></script>
+<script src="../js/custom.min.js"></script>
+<script src="../js/settings.js"></script>
+<script src="../js/gleek.js"></script>
+<script src="../js/styleSwitcher.js"></script>
+</html>

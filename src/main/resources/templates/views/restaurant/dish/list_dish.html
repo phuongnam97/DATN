@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{views/restaurant/fragments/master_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="userFullname" class="info"><a href="#" th:text="${userFullname}" class="d-block"></a></div>
+<div class="div-content" layout:fragment="content">
+    <script>
+        $(document).ready(function () {
+            $(".delete-button").click(function (e) {
+                // console.log(e.currentTarget.previousSibling.previousSibling.previousSibling.innerHTML)
+                console.log(e)
+            });
+        });
+
+        function checkDelete(id) {
+            console.log($('#row-' + id))
+            var code = $('#name-' + id).text();
+            var urlRedirect = 'http://localhost:8080/restaurant/dish/delete?id=' + id;
+            $('#button-redirect').attr('href', urlRedirect);
+            $(".modal-body").text("Bạn muốn xóa bàn " + code + " ?")
+        }
+
+        $(function () {
+            $("#dish-management").addClass("menu-open");
+            $("#dish-management").children('a').addClass("active");
+            $("#list-dish").addClass("active");
+        })
+    </script>
+    <style>
+        img.dish-product {
+            width: 150px;
+            height: 150px;
+        }
+    </style>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Danh sách món</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                        <li class="breadcrumb-item active">Danh sách món</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card container-fluid">
+
+                        <div th:if="${listObj.size() == 0}" class="card-body">
+                            Không có món, Bấm vào <a th:href="@{/restaurant/dish/create}">ĐÂY</a> để tạo
+                            bàn cho nhà hàng
+                        </div>
+                        <div th:if="${listObj.size() > 0}" class="card-body">
+                            <table id="example2" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Tên món</th>
+                                    <th>Ảnh</th>
+                                    <th>Loại đồ ăn</th>
+                                    <th>Giá tiền</th>
+                                    <th>Mô tả</th>
+                                    <!--<th>Trạng thái</th>-->
+                                    <th>Hành động</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <th:block th:each="dish:${listObj}">
+                                    <tr>
+                                        <td th:id="${'id-'+dish.id}" th:text="${dish.id}"></td>
+                                        <td th:id="${'name-'+dish.id}" th:text="${dish.name}"></td>
+                                        <td th:id="${'image-' + dish.id}"><img class="dish-product"
+                                                                               th:src="${dish.image}"></td>
+                                        <td th:id="${'dish-type-' + dish.id}" th:text="${dish.dishType.name}"></td>
+                                        <td th:id="${'price-' + dish.id}" th:text="${dish.getPriceString()}"></td>
+                                        <td th:id="${'description-'+dish.id}" th:text="${dish.description}"></td>
+                                        <!-- trạng thái bàn hiện tại -->
+                                        <!--<td th:text=""></td>-->
+                                        <td>
+                                            <a href="#" class="delete-button delete-a-hover" th:id="${dish.id}"
+                                               onclick="checkDelete(this.id)" style="color: red;" data-toggle="modal"
+                                               data-target="#modal-default">
+                                                <i class="fas fa-trash-alt">Xóa</i>
+                                            </a>
+
+                                            <a th:href="@{/restaurant/dish/edit(id=${dish.id})}"
+                                               class="delete-button delete-a-hover" th:id="${dish.id}"
+                                               style="color: #00bbec;">
+                                                <i class="fas fa-trash-alt">Sửa</i>
+                                            </a>
+                                        </td>
+
+                                    </tr>
+                                </th:block>
+                                <div class="modal fade" id="modal-default" style="display: none;" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Cảnh báo</h4>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Bạn có chắc muốn xóa bàn ?</p>
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                    Không
+                                                </button>
+                                                <a id="button-redirect">
+                                                    <button type="button" class="btn btn-primary">
+                                                        Đồng ý
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

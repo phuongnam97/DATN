@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{views/admin/fragments/master_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="div-content" layout:fragment="content">
+    <script>
+        function checkDelete(id)
+        {
+            if(confirm('Are you sure to delete this movie ?') == true){
+                if(confirm('If you delete this Restaurant Type, all Restaurant of this type will be deleted. Do you still want to delete it ?')){
+                    window.location.href = "http://localhost:8080/admin/restaurant_type/delete?id=" + id;
+                }
+            }
+        }
+    </script>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>List Restaurant Type</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">List Restaurant Type</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-12">
+                <div class="card container-fluid">
+
+                    <div th:if="${isEmpty == true}" class="card-body">
+                        There's no Restaurant Type created, Please click <a th:href="@{/admin/restaurant_type/create}">HERE</a> to create new Restaurant Type
+                    </div>
+                    <div th:if="${isEmpty == false}" class="card-body">
+                        <table id="example2" class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <th:block th:each="restaurant_type:${listObj}">
+                                <tr>
+                                    <td th:text="${restaurant_type.id}"></td>
+                                    <td th:text="${restaurant_type.name}"></td>
+                                    <td th:text="${restaurant_type.description}"></td>
+                                    <td>
+                                        <a th:href="@{/admin/restaurant_type/edit(id=${restaurant_type.id})}">
+                                            <i class="fas fa-edit">Edit</i>
+                                        </a>
+                                        <a href="#" class="delete-button delete-a-hover" th:id="${restaurant_type.id}" onclick="checkDelete(this.id)" style="color: red;">
+                                            <i class="fas fa-trash-alt">Delete</i>
+                                        </a>
+                                    </td>
+
+                                </tr>
+                            </th:block>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>
